@@ -118,7 +118,11 @@ elif operation == "Generate Platform Content":
             st.warning("Please upload a file.")
             st.stop()
 
-    platform = st.selectbox("Select platform", ["Twitter", "LinkedIn", "YouTube"])
+    # Conditional visibility for YouTube platform option
+    if input_type == "Audio":
+        platform = st.selectbox("Select platform", ["YouTube", "Twitter", "LinkedIn"])
+    else:
+        platform = st.selectbox("Select platform", ["Twitter", "LinkedIn"])  # YouTube option hidden
 
     if st.button("Generate Content"):
         with st.spinner("Generating content..."):
