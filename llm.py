@@ -31,10 +31,10 @@ def llm_call(input_content: str, platform: str, schema: Optional[Union[YTVideo, 
             },
         ],
         model="llama3-70b-8192",
-        temperature=0,
+        temperature=0.2,
         stream=False,
         response_format={"type": "json_object"},
-        max_tokens=1024
+        max_tokens=8192
     )
     
     try:
@@ -62,14 +62,12 @@ def create_ytvideo_content(input_content: str) -> str:
         return content.yt_video_description
     return str(content)
 
-def create_platform_content(input_content: str, platform: str) -> str:
-    if platform == "twitter":
-        content = create_twitter_content(input_content)
-    elif platform == "linkedin":
-        content = create_linkedin_content(input_content)
-    elif platform == "ytvideo":
-        content = create_ytvideo_content(input_content)
+def create_platform_content(input_text: str, platform: str) -> str:
+    if platform.lower() == "youtube":
+        return create_ytvideo_content(input_text)
+    elif platform.lower() == "linkedin":
+        return create_linkedin_content(input_text)
+    elif platform.lower() == "twitter":
+        return create_twitter_content(input_text)
     else:
         raise ValueError(f"Unsupported platform: {platform}")
-    
-    return content

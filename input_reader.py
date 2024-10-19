@@ -40,16 +40,29 @@ class InputReader:
         return soup.get_text()
 
     def translate_text(self, text: str, source_lang: str, target_lang: str) -> str:
-        prompt = f"Translate the following text from {source_lang} to {target_lang}:\n\n{text}"
+        prompt = f"""Translate the following text from {source_lang} to {target_lang}:
+
+    {text}
+
+    Translation guidelines:
+    1. Maintain the original meaning and tone.
+    2. Use natural, fluent language in the target language.
+    3. Avoid word-for-word translation if it doesn't sound natural.
+    4. Do not repeat information or phrases.
+    5. Ensure the translation is concise and clear.
+    6. If the original text contains repetitions, consolidate the information in the translation.
+    7. Maintain paragraph structure, but feel free to combine sentences for better flow.
+
+    Translated text:"""
         
         chat_completion = client.chat.completions.create(
             messages=[
-                {"role": "system", "content": "You are a helpful translator."},
+                {"role": "system", "content": "You are an expert translator. Provide accurate, natural-sounding translations without any repetition. Consolidate information if the source text is repetitive."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama3-70b-8192",
-            temperature=0.3,
-            max_tokens=1024
+            model="llama-3.2-90b-vision-preview",
+            temperature=0.1,
+            max_tokens=3000  # Slightly reduce token limit
         )
         
         return chat_completion.choices[0].message.content.strip()
