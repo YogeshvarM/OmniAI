@@ -39,8 +39,8 @@ class InputReader:
         soup = BeautifulSoup(response.content, 'html.parser')
         return soup.get_text()
 
-    def translate_text(self, text: str, source_lang: str, target_lang: str) -> str:
-        prompt = f"""Translate the following text from {source_lang} to {target_lang}:
+    def translate_text(self, text: str, target_lang: str) -> str:
+        prompt = f"""Translate the following text to {target_lang}:
 
     {text}
 

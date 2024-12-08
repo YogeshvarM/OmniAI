@@ -46,7 +46,6 @@ if operation == "Process Input & Translate":
     elif input_type == "Text File":
         uploaded_file = st.file_uploader("Choose a text file", type=["txt"])
     
-    source_lang = st.selectbox("Select source language", options=["en", "hi", "es", "fr", "de"])
     target_lang = st.selectbox("Select target language for translation", options=["en", "hi", "es", "fr", "de"])
     output_dir = st.text_input("Enter output directory path", value="./output")
     
@@ -58,13 +57,13 @@ if operation == "Process Input & Translate":
                     file_object.write(uploaded_file.read())
                 
                 if input_type == "Audio":
-                    content = reader.transcribe_audio(file_location, source_lang)
+                    content = reader.transcribe_audio(file_location)
                 elif input_type == "PDF":
                     content = reader.read_pdf_file(file_location)
                 elif input_type == "Text File":
                     content = reader.read_text_file(file_location)
                 
-                translated_content = reader.translate_text(content, source_lang, target_lang)
+                translated_content = reader.translate_text(content, target_lang)
                 
                 st.success("Translation completed successfully!")
                 st.text_area("Translated Content", translated_content, height=300)
